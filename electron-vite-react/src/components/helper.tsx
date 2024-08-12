@@ -3,6 +3,10 @@ import { Box, Button, HStack, Center, VStack, CheckboxGroup, Checkbox, Code, Tex
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 import React, { useState } from 'react';
 import { FileTree } from './fileTree';
+import { Look } from '@/api/look';
+import { GetConfig } from '@/api/config.get';
+import { PutConfig, saved_state } from '@/api/config.put';
+import { Think } from '@/api/think';
 
 
 
@@ -26,8 +30,7 @@ Dont remove features by accident.
 Remember to import things when needed. Please write code that is absolutely perfect with no shortcuts taken and no bugs.
 Don't just add logs to debug, actually fix bugs immediately.`;
 
-
-let savedState:{folder:string,prompt?:string,webapp?:string,showScreenshot?:boolean,selectedFiles?:string[],apiKey?:string};
+let savedState:saved_state;
 export const Helper = () => {
   const [value, setValue] = useState('')
   let [prompt, setPrompt] = useState('')
@@ -50,10 +53,7 @@ export const Helper = () => {
   async function takeScreenshot(){
     if (!showScreenshot) return;
     setScreenshotting(true);
-
-    const {screenshot,errors} = (await (await fetch('/look', { method: 'post', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ 
-      webapp
-    }) })).json());
+    const {screenshot,errors} = await Look({webapp});
     setScreenshot(screenshot);
     setBrowserErrors(errors);
     setScreenshotting(false);
@@ -62,9 +62,9 @@ export const Helper = () => {
     if (!savedState) {
       const localState = JSON.parse(localStorage.getItem('ai-coder')??JSON.stringify({folder:'/fillthisin'}));
       folder = localState.folder;
-      savedState = await (await fetch('/config/get', { method: 'post', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ 
-        folder
-      }) })).json();
+      if (folder) {
+        savedState = await GetConfig({folder});
+      }
     }
     setFolder(folder);
     prompt = savedState.prompt??'';
@@ -90,18 +90,19 @@ export const Helper = () => {
     setValue(event.target.value)
   }
   const saveLocal = async () => {
+    if (!folder) return;
     localStorage.setItem('ai-coder',JSON.stringify({folder}));
-    await fetch('/config/put', { method: 'post', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ 
-      folder,
-      content:{
+    await PutConfig({
         folder,
-        prompt,
-        webapp,
-        showScreenshot,
-        selectedFiles,
-        apiKey
-      }
-    }) });
+        content:{
+          folder,
+          prompt,
+          webapp,
+          showScreenshot,
+          selectedFiles,
+          apiKey
+        }
+    })
   }
   const [history, setHistory] = useState<Array<ToolsBetaMessageParam>>([]);
   const [thinking, setThinking] = useState(false);
@@ -115,19 +116,26 @@ export const Helper = () => {
       if (uploadedImage?.length) images.push(uploadedImage);
       setThinking(true);
       const prompt = browserErrors ? `errors: ${browserErrors}\n` : '' + `${value}`;
-      const rres = await fetch('/think', { method: 'post', headers: { 'content-type': 'application/json','X-API-Key':apiKey }, body: JSON.stringify({ 
+      // const rres = await fetch('/think', { method: 'post', headers: { 'content-type': 'application/json','X-API-Key':apiKey }, body: JSON.stringify({ 
+      //   instruction:prompt,
+      //   files:selectedFiles.map(file => file.slice(folder?.length)),
+      //   folder,
+      //   prompt:systemMessage+'\n'+prompt,
+      //   images:
+      //   images
+      // }) });
+      // if (!rres.ok) {
+      //   setIssues([rres.status,await rres.text()]);
+      //   return;
+      // }
+      const {res,issues,tokens_used,tokens_remaining}:{res:Array<ToolsBetaMessageParam>,issues:[],tokens_used:number,tokens_remaining:number} = await Think({ 
         instruction:prompt,
         files:selectedFiles.map(file => file.slice(folder?.length)),
         folder,
         prompt:systemMessage+'\n'+prompt,
-        images:
-        images
-      }) });
-      if (!rres.ok) {
-        setIssues([rres.status,await rres.text()]);
-        return;
-      }
-      const {res,issues,tokens_used,tokens_remaining}:{res:Array<ToolsBetaMessageParam>,issues:[],tokens_used:number,tokens_remaining:number} = await rres.json();
+        images,
+        apiKey
+      });
       // opnly show most recent for now
       setIssues(issues);
       setHistory([...res]);

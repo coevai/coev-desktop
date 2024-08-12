@@ -1,15 +1,13 @@
 import React, { useMemo } from 'react';
 import { Icon, IconButton ,Box,Checkbox} from '@chakra-ui/react'
 import { ChevronDownIcon,ChevronRightIcon,ChevronUpIcon } from '@chakra-ui/icons';
+import { ListFiles } from '@/api/files.list';
 export function FileTree({path,is_folder,base_path,expand,toggleSelectedFile,selectedFiles}:{path:string,is_folder:boolean,base_path:string,expand?:boolean,toggleSelectedFile:(path:string) => any,selectedFiles:string[]}) { 
     const [expanded,setExpanded] = React.useState(expand);
     // use effect to fetch children
     const expandFolder = async () => {
         if (!files && is_folder) {
-            console.log(path);
-            const files = await (await fetch('/files/list', { method: 'post', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ 
-                path
-            }) })).json();
+            const files = await ListFiles({path});
             setFiles(files);
         }
     }
