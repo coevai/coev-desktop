@@ -257,7 +257,7 @@ export const Helper = () => {
             </>}
             {screenshotting && <HStack className='text-center items-center'><div>Screenshotting {webapp}<Spinner /></div></HStack>}
             {showScreenshot && screenshot && <>
-              <Image maxWidth='768px' border={'1px'} className="border-2" src={'data:image/png;base64, '+screenshot}/>
+              <Image maxWidth='768px' border={'1px'} className="border-2" src={screenshot}/>
             </>}
             {
               browserErrors && <>
