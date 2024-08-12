@@ -34,6 +34,7 @@ export interface CoevAPI {
   PutConfig: typeof PutConfig,
   ListFiles: typeof ListFiles,
   Look: typeof Look,
+  OpenDirectory: typeof OpenDirectory
 }
 
 declare global {

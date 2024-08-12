@@ -171,16 +171,11 @@ export const Helper = () => {
             <TabPanel>
               <VStack align='stretch' spacing={3}>
                 <div className='font-semibold'>&#128193; Workspace Path *</div>
-                <Input
-                  value={folder}
-                  placeholder='/path/to/workspace'
-                  size='sm'
-                  variant='filled'
-                  onChange={(e) => {
-                  folder = e.target.value;
+                <input value={folder} onClick={async () =>{
+                  folder = await window.CoevAPI.OpenDirectory();
                   setFolder(folder);
                   saveLocal();
-                  }}/>
+                }} />
                 <div className='font-semibold'>Select Files for AI to read / edit *</div>
                 {folder && configLoaded && <FileTree path={folder} is_folder={true} base_path={folder} expand={true} toggleSelectedFile={toggleSelectFile} selectedFiles={selectedFiles}/>}
 

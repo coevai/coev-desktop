@@ -80,7 +80,7 @@ async function createWindow() {
 
   // Auto update
   update(win)
-  coevhandlers();
+  coevhandlers(win);
 }
 
 app.whenReady().then(createWindow)

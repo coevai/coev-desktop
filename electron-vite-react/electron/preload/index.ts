@@ -33,7 +33,8 @@ contextBridge.exposeInMainWorld('CoevAPI', {
   GetConfig: (p:any) => ipcRenderer.invoke('get-config',p),
   PutConfig: (p:any) => ipcRenderer.invoke('put-config',p),
   ListFiles: (p:any) => ipcRenderer.invoke('list-files',p),
-  Look: (p:any) => ipcRenderer.invoke('look',p)
+  Look: (p:any) => ipcRenderer.invoke('look',p),
+  OpenDirectory: (p:any) => ipcRenderer.invoke('open-directory',p)
 })
 
 // --------- Preload scripts loading ---------
