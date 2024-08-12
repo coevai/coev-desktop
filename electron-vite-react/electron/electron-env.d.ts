@@ -1,5 +1,11 @@
 /// <reference types="vite-electron-plugin/electron-env" />
 
+import { GetConfig } from "./preload/api/config.get"
+import { PutConfig } from "./preload/api/config.put"
+import { ListFiles } from "./preload/api/files.list"
+import { Look } from "./preload/api/look"
+import { Think } from "./preload/api/think"
+
 declare namespace NodeJS {
   interface ProcessEnv {
     VSCODE_DEBUG?: 'true'
@@ -19,5 +25,19 @@ declare namespace NodeJS {
     APP_ROOT: string
     /** /dist/ or /public/ */
     VITE_PUBLIC: string
+  }
+}
+
+export interface CoevAPI {
+  Think: typeof Think,
+  GetConfig: typeof GetConfig,
+  PutConfig: typeof PutConfig,
+  ListFiles: typeof ListFiles,
+  Look: typeof Look,
+}
+
+declare global {
+  interface Window {
+    CoevAPI: CoevAPI
   }
 }

@@ -3,10 +3,6 @@ import { Box, Button, HStack, Center, VStack, CheckboxGroup, Checkbox, Code, Tex
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 import React, { useState } from 'react';
 import { FileTree } from './fileTree';
-import { Look } from '@/api/look';
-import { GetConfig } from '@/api/config.get';
-import { PutConfig, saved_state } from '@/api/config.put';
-import { Think } from '@/api/think';
 
 
 
@@ -53,7 +49,7 @@ export const Helper = () => {
   async function takeScreenshot(){
     if (!showScreenshot) return;
     setScreenshotting(true);
-    const {screenshot,errors} = await Look({webapp});
+    const {screenshot,errors} = await window.CoevAPI.Look({webapp});
     setScreenshot(screenshot);
     setBrowserErrors(errors);
     setScreenshotting(false);
@@ -63,7 +59,7 @@ export const Helper = () => {
       const localState = JSON.parse(localStorage.getItem('ai-coder')??JSON.stringify({folder:'/fillthisin'}));
       folder = localState.folder;
       if (folder) {
-        savedState = await GetConfig({folder});
+        savedState = await window.CoevAPI.GetConfig({folder});
       }
     }
     setFolder(folder);
@@ -92,7 +88,7 @@ export const Helper = () => {
   const saveLocal = async () => {
     if (!folder) return;
     localStorage.setItem('ai-coder',JSON.stringify({folder}));
-    await PutConfig({
+    await window.CoevAPI.PutConfig({
         folder,
         content:{
           folder,
@@ -128,7 +124,7 @@ export const Helper = () => {
       //   setIssues([rres.status,await rres.text()]);
       //   return;
       // }
-      const {res,issues,tokens_used,tokens_remaining}:{res:Array<ToolsBetaMessageParam>,issues:[],tokens_used:number,tokens_remaining:number} = await Think({ 
+      const {res,issues,tokens_used,tokens_remaining}:{res:Array<ToolsBetaMessageParam>,issues:[],tokens_used:number,tokens_remaining:number} = await window.CoevAPI.Think({ 
         instruction:prompt,
         files:selectedFiles.map(file => file.slice(folder?.length)),
         folder,

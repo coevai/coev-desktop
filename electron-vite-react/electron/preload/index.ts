@@ -1,4 +1,9 @@
 import { ipcRenderer, contextBridge } from 'electron'
+import { Think } from './api/think'
+import { GetConfig } from './api/config.get'
+import { PutConfig } from './api/config.put'
+import { ListFiles } from './api/files.list'
+import { Look } from './api/look'
 
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld('ipcRenderer', {
@@ -21,6 +26,14 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 
   // You can expose other APTs you need here.
   // ...
+})
+
+contextBridge.exposeInMainWorld('CoevAPI', {
+  Think: Think,
+  GetConfig: GetConfig,
+  PutConfig: PutConfig,
+  ListFiles: ListFiles,
+  Look: Look
 })
 
 // --------- Preload scripts loading ---------
