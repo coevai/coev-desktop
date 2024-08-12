@@ -3,6 +3,7 @@ import { Box, Button, HStack, Center, VStack, CheckboxGroup, Checkbox, Code, Tex
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 import React, { useState } from 'react';
 import { FileTree } from './fileTree';
+import { saved_state } from 'electron/main/api/config.put';
 
 
 
@@ -124,7 +125,7 @@ export const Helper = () => {
       //   setIssues([rres.status,await rres.text()]);
       //   return;
       // }
-      const {res,issues,tokens_used,tokens_remaining}:{res:Array<ToolsBetaMessageParam>,issues:[],tokens_used:number,tokens_remaining:number} = await window.CoevAPI.Think({ 
+      const {res,issues,tokens_used,tokens_remaining}:{res:Array<ToolsBetaMessageParam>,issues:any[],tokens_used:number,tokens_remaining:number} = await window.CoevAPI.Think({ 
         instruction:prompt,
         files:selectedFiles.map(file => file.slice(folder?.length)),
         folder,
