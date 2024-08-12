@@ -1,10 +1,10 @@
 /// <reference types="vite-electron-plugin/electron-env" />
 
-import { GetConfig } from "./preload/api/config.get"
-import { PutConfig } from "./preload/api/config.put"
-import { ListFiles } from "./preload/api/files.list"
-import { Look } from "./preload/api/look"
-import { Think } from "./preload/api/think"
+import { GetConfig } from "./main/api/config.get"
+import { PutConfig } from "./main/api/config.put"
+import { ListFiles } from "./main/api/files.list"
+import { Look } from "./main/api/look"
+import { Think } from "./main/api/think"
 
 declare namespace NodeJS {
   interface ProcessEnv {

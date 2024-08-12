@@ -1,9 +1,9 @@
 import { ipcRenderer, contextBridge } from 'electron'
-import { Think } from './api/think'
-import { GetConfig } from './api/config.get'
-import { PutConfig } from './api/config.put'
-import { ListFiles } from './api/files.list'
-import { Look } from './api/look'
+import { Think } from '../main/api/think'
+import { GetConfig } from '../main/api/config.get'
+import { PutConfig } from '../main/api/config.put'
+import { ListFiles } from '../main/api/files.list'
+import { Look } from '../main/api/look'
 
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld('ipcRenderer', {
@@ -29,11 +29,11 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 })
 
 contextBridge.exposeInMainWorld('CoevAPI', {
-  Think: Think,
-  GetConfig: GetConfig,
-  PutConfig: PutConfig,
-  ListFiles: ListFiles,
-  Look: Look
+  Think: (p:any) => ipcRenderer.invoke('think',p),
+  GetConfig: (p:any) => ipcRenderer.invoke('get-config',p),
+  PutConfig: (p:any) => ipcRenderer.invoke('put-config',p),
+  ListFiles: (p:any) => ipcRenderer.invoke('list-files',p),
+  Look: (p:any) => ipcRenderer.invoke('look',p)
 })
 
 // --------- Preload scripts loading ---------
