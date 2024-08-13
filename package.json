@@ -1,6 +1,6 @@
 {
   "name": "electron-vite-react",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist-electron/main/index.js",
   "description": "Electron Vite React boilerplate.",
   "author": "草鞋没号 <308487730@qq.com>",
@@ -24,7 +24,9 @@
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.13.0",
-    "electron-updater": "^6.1.8"
+    "@emotion/styled": "^11.13.0",
+    "electron-updater": "^6.1.8",
+    "framer-motion": "^11.3.24"
   },
   "devDependencies": {
     "@playwright/test": "^1.42.1",
