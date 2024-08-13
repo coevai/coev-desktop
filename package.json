@@ -1,6 +1,6 @@
 {
   "name": "electron-vite-react",
-  "version": "2.2.0",
+  "version": "1.0.0",
   "main": "dist-electron/main/index.js",
   "description": "Electron Vite React boilerplate.",
   "author": "草鞋没号 <308487730@qq.com>",
@@ -14,7 +14,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && electron-builder",
+    "build": "tsc && vite build",
+    "build-old": "tsc && vite build && electron-builder",
     "preview": "vite preview",
     "pree2e": "vite build --mode=test",
     "e2e": "playwright test"
