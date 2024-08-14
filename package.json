@@ -27,8 +27,8 @@
     "publish": {
       "provider": "github",
       "host": "",
-      "owner": "coevai",
-      "repo": "coev-desktop",
+      "owner": "joshp-f",
+      "repo": "coevai/coev-desktop",
       "releaseType": "release"
     }
   },
