@@ -19,14 +19,8 @@
     "pree2e": "vite build --mode=test",
     "e2e": "playwright test"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/coevai/coev-desktop"
-  },
   "build": {
     "publish": {
-      "provider": "github",
-      "repo": "coevai/coev-desktop",
       "releaseType": "release"
     }
   },
